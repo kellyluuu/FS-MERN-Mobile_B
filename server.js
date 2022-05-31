@@ -46,6 +46,13 @@ app.use(cors())
 app.use (morgan("dev"))
 app.use (express.json())
 
+app.use('/login', (req, res) => {
+    res.send({
+      token: 'test123'
+    });
+  });
+
+  
 //main route
 app.get("/", (req,res)=>{
     res.send ("backend is up")
