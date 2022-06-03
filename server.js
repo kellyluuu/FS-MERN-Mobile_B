@@ -2,17 +2,17 @@ require ("dotenv").config()
 const { PORT = 3001, DATABASE_URL } = process.env
 const express = require("express")
 const app = express ()
-// const session = require("express-session");
-// const MongoStore = require("connect-mongo");
-const bcrypt = require("bcryptjs");
-
 const cors = require("cors")
 const morgan = require ("morgan")
+const cookieParser = require("cookie-parser");
 
 const mongoose = require("mongoose")
 
+
+
 // if data is json it will auto parse the req.body to json object
-app.use(express.json())
+
+
 
 mongoose.connect(DATABASE_URL, {
     useNewUrlParser: true,
@@ -33,23 +33,26 @@ const MenuSchema = new mongoose.Schema({
 })
 const Menu = mongoose.model("Menu", MenuSchema)
 
-// User Schema
-const userSchema = new mongoose.Schema({
-    username: { type: String, required: true, unique: true },
-    passwordHash: { type: String, required: true },
-  })  
-const User = mongoose.model("User", userSchema);
 
-module.exports = User;
   
+  
+app.use(morgan("dev"))
+app.use(express.json())
+app.use(cookieParser())
+app.use(
+    cors({
+        origin: ["http://localhost:3000"],
+        credentials: true,
+    })
+    )
 
-app.use(cors())
-app.use (morgan("dev"))
-app.use (express.json())
+
 
   
 //set route
-app.use("/auth", require("./routers/userRouter"))
+app.use("/auth", require("./routers/userRouter"));
+app.use("/customer", require("./routers/customerRouter"));
+
 
 //main route
 app.get("/", (req,res)=>{
