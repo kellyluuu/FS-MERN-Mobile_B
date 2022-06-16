@@ -4,7 +4,7 @@ const express = require("express")
 const app = express ()
 const cors = require("cors")
 const morgan = require ("morgan")
-const cookieParser = require("cookie-parser");
+
 
 const mongoose = require("mongoose")
 
@@ -38,20 +38,13 @@ const Menu = mongoose.model("Menu", MenuSchema)
   
 app.use(morgan("dev"))
 app.use(express.json())
-app.use(cookieParser())
-app.use(
-    cors({
-        origin: ["http://localhost:3000"],
-        credentials: true,
-    })
-    )
+
+app.use(cors())
 
 
 
   
-//set route
-app.use("/auth", require("./routers/userRouter"));
-app.use("/customer", require("./routers/customerRouter"));
+
 
 
 //main route
